@@ -1,14 +1,11 @@
-class RestaurantAgent:
-    def handle_message(self, message: str) -> str:
-        message = message.lower()
+from app.core.intents import INTENTS
 
-        if "heure" in message or "horaire" in message:
-            return "Le restaurant est ouvert de 11h à 23h."
 
-        if "menu" in message or "pizza" in message:
-            return "Nous proposons plusieurs pizzas, classiques et spéciales."
+def handle_message(message: str) -> str:
+    msg = message.lower()
 
-        return (
-            "Je peux vous aider pour les horaires, le menu "
-            "ou vous transférer à un employé."
-        )
+    for intent, data in INTENTS.items():
+        if any(keyword in msg for keyword in data["keywords"]):
+            return data["response"]
+
+    return "🤖 Désolé, je n’ai pas compris votre demande."
